@@ -1,0 +1,16 @@
+#!/bin/bash
+
+export PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
+
+# cp -r /autograder/source/test_suite/* /autograder/submission
+mkdir -p /autograder/submission/test/course_tests
+cp -r /autograder/source/flutter_tests/* /autograder/submission/test/course_tests
+cd /autograder/submission
+
+# Adds the required library required for flutter testing
+flutter pub add dev:test
+flutter pub add dart_test_adapter
+flutter pub get
+
+# flutter run_tests.py
+flutter test 'test/course_tests/gradescope_flutter/gradescope_run_test.dart'
