@@ -2,6 +2,8 @@
 
 This Dart script is designed to run Flutter tests, process the results, and generate a JSON report of the test outcomes. It uses Flutter's testing framework and custom extensions to adapt the results for Gradescope or similar platforms.
 
+Class-specific tests should *not* ever be added to this repo.
+
 ## Features
 
 - **Load Configuration**: Reads configuration from a JSON file to determine which tests to run.
