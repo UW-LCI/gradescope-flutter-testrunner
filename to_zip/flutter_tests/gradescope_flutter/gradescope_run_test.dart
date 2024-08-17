@@ -6,7 +6,7 @@ import 'dart:async';
 import 'dart:io';
 import 'test_runner_extension.dart';
 
-
+// Asynchronously loads and parses configuration tests from a JSON file
 Future<List<ConfigTest>> loadConfigTestsFromFile(String filePath) async {
   try {
     // Read the file
@@ -40,8 +40,13 @@ Future<List<ConfigTest>> loadConfigTestsFromFile(String filePath) async {
 
 void main() async {
 
+  // Path to the configuration JSON file
   String filePath = 'test/course_tests/gradescope_flutter/config.json';
+  
+  // Load configuration data from file
   List<ConfigTest> configData = await loadConfigTestsFromFile(filePath);
+  
+  // Initialize collections for test results  
   var testResults = <int, GradescopeTest>{};
   var tests = <GradescopeTest>[];
   var execution_time = 0;
@@ -64,11 +69,14 @@ void main() async {
           print('Analysis completed successfully.');
           test.status = "success";
         }
+
+        // Add the test result to the map and list
         testResults[0] = test;
         tests.add(test);
         continue;
     }
 
+    // Create a stream for running Flutter tests
     var testStream = flutterTestByNames(testFiles: [configtest.testPath], testNames: [configtest.testName]);
     var final_score = 0.0;
     GradescopeTest? test = GradescopeTest(name: configtest.rubricElementName, score: 0.0, maxScore: configtest.maxPoints);
@@ -93,6 +101,8 @@ void main() async {
             // To avoid considering Test events like : 
             // "loading xxx/accessibility_contrast_and_spacing_test.dart"
             if (event.test.name.contains("loading") != true){
+              print('${configtest.rubricElementName}');
+
               testResults[event.test.id] = GradescopeTest(
                 name: '${configtest.rubricElementName} ${event.test.name}',
                 score: 0.0,
@@ -100,14 +110,18 @@ void main() async {
               );
             }
         } else if (event is TestEventTestDone) {
-          print('Test ended: ${event.testID}, Result: ${event.result.name}');
 
           if (testResults[event.testID] != null) {
+
             testResults[event.testID]?.status = event.result.name;
             if (event.result.name == "success"){
               testResults[event.testID]?.score += score;
               final_score += score;
+              print('-- \U{2705} +${score}: ${testResults[event.testID].name}');
               // print('final_score : ${final_score} score: ${testResults[event.testID]?.score}');
+
+            }else{
+              print('-- \U{274C} +0.0: ${testResults[event.testID].name}');
 
             }
           }
