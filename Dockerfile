@@ -8,7 +8,8 @@ RUN apt-get update
 # Install necessary dependencies for running Flutter on web
 
 
-ADD source /autograder/source
+ADD setup.sh /autograder/source
+ADD run_autograder /autograder/source
 RUN mkdir /autograder/test_suite
 ADD test_suite /autograder/test_suite/
 
