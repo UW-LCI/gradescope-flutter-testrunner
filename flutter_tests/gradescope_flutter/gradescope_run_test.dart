@@ -85,6 +85,7 @@ void main() async {
     if (configtest.testName == "all"){
       testStream = flutterTestByNames(testFiles: [configtest.testPath]);
     }
+    print('${configtest.rubricElementName}');
 
     // Set a timeout for the stream
     final timeout = Duration(seconds: 60); // Adjust the timeout as needed
@@ -101,10 +102,9 @@ void main() async {
             // To avoid considering Test events like : 
             // "loading xxx/accessibility_contrast_and_spacing_test.dart"
             if (event.test.name.contains("loading") != true){
-              print('${configtest.rubricElementName}');
 
               testResults[event.test.id] = GradescopeTest(
-                name: '${configtest.rubricElementName} ${event.test.name}',
+                name: '${configtest.rubricElementName}: ${event.test.name}',
                 score: 0.0,
                 maxScore: configtest.maxPoints,
               );
@@ -117,16 +117,16 @@ void main() async {
             if (event.result.name == "success"){
               testResults[event.testID]?.score += score;
               final_score += score;
-              print('-- \U{2705} +${score}: ${testResults[event.testID].name}');
+              print('-- \u{2705} +${score}: ${(testResults[event.testID]?.name)?.split(':')[1]}');
               // print('final_score : ${final_score} score: ${testResults[event.testID]?.score}');
 
             }else{
-              print('-- \U{274C} +0.0: ${testResults[event.testID].name}');
+              print('-- \u{274C} +0.0: ${(testResults[event.testID]?.name)?.split(':')[1]}');
 
             }
           }
         } else if (event is TestEventDone) {
-          print('Test ended: ${tests.last.name} ${event.toString()}');
+          // print('Test ended: ${tests.last.name} ${event.toString()}');
           completer.complete();
           execution_time += event.time;
           if (event.success == false && configtest.testName == "all"){
