@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class GradescopeTest {
   String name;
   double score;
@@ -11,8 +9,8 @@ class GradescopeTest {
     required this.name,
     required this.score,
     required this.maxScore,
-    this.status = "failed",
-    this.visibility = "visible",
+    this.status = 'failed',
+    this.visibility = 'visible',
   });
 
   // Convert a Test instance to a map
@@ -68,12 +66,12 @@ class ConfigTest {
   ConfigTest({
     required this.rubricElementName,
     required this.testPath,
-    this.testName="all",
+    this.testName='all',
     this.tags,
     required this.points,
     required this.maxPoints,
     this.testGroup,
-    this.pointAllocation = "binary",
+    this.pointAllocation = 'binary',
   });
 
   factory ConfigTest.fromJson(Map<String, dynamic> json) {

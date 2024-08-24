@@ -10,6 +10,7 @@ cd /autograder/submission
 # Adds the required library required for flutter testing
 flutter pub add dev:test
 flutter pub add dart_test_adapter
+flutter pub add logger
 flutter pub get
 
 # flutter run_tests.py
